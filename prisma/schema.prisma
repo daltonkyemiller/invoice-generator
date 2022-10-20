@@ -19,7 +19,7 @@ model Company {
     name    String
     address String
     city    String
-    notes   String    @default("Thank you!")
+    notes   String?   @default("Thank you!")
     Invoice Invoice[]
 }
 
@@ -34,9 +34,11 @@ model Invoice {
 }
 
 model Service {
-    id   Int   @id @default(autoincrement())
-    hrs  Float
-    rate Float
+    id    Int     @id @default(autoincrement())
+    name  String
+    hrs   Float
+    rate  Float
+    notes String?
 
     Invoice   Invoice @relation(fields: [invoiceId], references: [id])
     invoiceId Int
