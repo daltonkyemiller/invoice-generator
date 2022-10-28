@@ -6,7 +6,7 @@ import { Theme } from 'react-daisyui';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
     return (
-        <Theme dataTheme="lofi">
+        <Theme dataTheme="mytheme">
             <Component {...pageProps} />
         </Theme>
     );

@@ -25,7 +25,7 @@ export default function ServiceBuilder() {
                 <Input {...register('hrs')} placeholder="Hours..." />
             </div>
 
-            <Button>
+            <Button variant="outline">
                 <IoMdAdd color="white" size={30} />
             </Button>
         </div>

@@ -1,3 +1,91 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	@variants responsive {
+		.text-shadow-xs {
+			text-shadow: 1px 1px 0 var(--tw-shadow-color),
+			-1px 1px 0 var(--tw-shadow-color),
+			1px -1px 0 var(--tw-shadow-color),
+			-1px -1px 0 var(--tw-shadow-color);
+		}
+
+		.text-shadow {
+			text-shadow: 2px 2px 5px var(--tw-shadow-color),
+			-2px 2px 5px var(--tw-shadow-color),
+			2px -2px 5px var(--tw-shadow-color),
+			-2px -2px 5px var(--tw-shadow-color);
+		}
+
+		.text-shadow-none {
+			text-shadow: none;
+		}
+	}
+}
+@font-face {
+	font-family: 'NB-International-Pro';
+	src: url("/fonts/NB-International/NB-International-Pro-Regular.ttf") format("truetype");
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'NB-International-Pro';
+	src: url("/fonts/NB-International/NB-International-Pro-Light.ttf") format("truetype");
+	font-weight: 300;
+}
+
+@font-face {
+	font-family: 'NB-International-Pro';
+	src: url("/fonts/NB-International/NB-International-Pro-Bold.ttf") format("truetype");
+	font-weight: 700;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+:root {
+	filter: blur(.25px);
+	font-family: 'NB-International-Pro', sans-serif;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+:root::after {
+	position: absolute;
+	filter: brightness(60%) contrast(125%);
+	content: "";
+	inset: 0;
+	mix-blend-mode: hard-light;
+	z-index: 20;
+	background: url(https://grainy-gradients.vercel.app/noise.svg);
+	background-size: 300px;
+	pointer-events: none;
+}
+
+h1,h2,h3,h4{
+	@apply shadow-base-content/25 text-shadow;
+}
+
+.upper-divider{
+	position: relative;
+}
+.upper-divider::before{
+	@apply bg-base-content shadow-base-content;
+	box-shadow: 0 0 10px var(--tw-shadow-color);
+	content: "";
+	position: absolute;
+	top: 0;
+	height: .25rem;
+	width: 100%;
+}
+
+.glow-border{
+	@apply shadow-base-content/25 border-2 border-base-content/75;
+	box-shadow: 0 0 25px 2px var(--tw-shadow-color);
+}
+
+.input-bordered, .textarea-bordered{
+	--tw-border-opacity: .5;
+}

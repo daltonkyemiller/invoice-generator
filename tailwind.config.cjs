@@ -1,8 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}", 'node_modules/daisyui/dist/**/*.js', 'node_modules/react-daisyui/dist/**/*.js'],
-  theme: {
-    extend: {},
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          ...require("daisyui/src/colors/themes")["[data-theme=coffee]"],
+          'accent': "#c7ddb2",
+          'base-100': "#130d16",
+          'base-content': "rgb(196, 49, 28)",
+          '--rounded-box': '0',
+          '--rounded-btn': '0'
+        },
+      },
+    ],
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require('@tailwindcss/typography')],
 };

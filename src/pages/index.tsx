@@ -15,7 +15,7 @@ const Home: NextPage = () => {
                 <div className="h-full basis-1/3">
                     <InvoiceBuilder />
                 </div>
-                <div className="min-h-full basis-2/3 border-4">
+                <div className="glow-border min-h-full basis-2/3">
                     <InvoiceRenderer />
                 </div>
             </main>
