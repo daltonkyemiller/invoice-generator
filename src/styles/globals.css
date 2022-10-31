@@ -3,24 +3,22 @@
 @tailwind utilities;
 
 @layer components {
-	@variants responsive {
-		.text-shadow-xs {
-			text-shadow: 1px 1px 0 var(--tw-shadow-color),
-			-1px 1px 0 var(--tw-shadow-color),
-			1px -1px 0 var(--tw-shadow-color),
-			-1px -1px 0 var(--tw-shadow-color);
-		}
+	.text-shadow-xs {
+		text-shadow: 1px 1px 0 var(--tw-shadow-color),
+		-1px 1px 0 var(--tw-shadow-color),
+		1px -1px 0 var(--tw-shadow-color),
+		-1px -1px 0 var(--tw-shadow-color);
+	}
 
-		.text-shadow {
-			text-shadow: 2px 2px 5px var(--tw-shadow-color),
-			-2px 2px 5px var(--tw-shadow-color),
-			2px -2px 5px var(--tw-shadow-color),
-			-2px -2px 5px var(--tw-shadow-color);
-		}
+	.text-shadow {
+		text-shadow: 2px 2px 5px var(--tw-shadow-color),
+		-2px 2px 5px var(--tw-shadow-color),
+		2px -2px 5px var(--tw-shadow-color),
+		-2px -2px 5px var(--tw-shadow-color);
+	}
 
-		.text-shadow-none {
-			text-shadow: none;
-		}
+	.text-shadow-none {
+		text-shadow: none;
 	}
 }
 @font-face {
@@ -64,14 +62,15 @@
 	pointer-events: none;
 }
 
-h1,h2,h3,h4{
+h1, h2, h3, h4 {
 	@apply shadow-base-content/25 text-shadow;
 }
 
-.upper-divider{
+.upper-divider {
 	position: relative;
 }
-.upper-divider::before{
+
+.upper-divider::before {
 	@apply bg-base-content shadow-base-content;
 	box-shadow: 0 0 10px var(--tw-shadow-color);
 	content: "";
@@ -81,11 +80,11 @@ h1,h2,h3,h4{
 	width: 100%;
 }
 
-.glow-border{
+.glow-border {
 	@apply shadow-base-content/25 border-2 border-base-content/75;
 	box-shadow: 0 0 25px 2px var(--tw-shadow-color);
 }
 
-.input-bordered, .textarea-bordered{
+.input-bordered, .textarea-bordered {
 	--tw-border-opacity: .5;
 }

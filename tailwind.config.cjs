@@ -7,8 +7,8 @@ module.exports = {
         mytheme: {
           ...require("daisyui/src/colors/themes")["[data-theme=coffee]"],
           'accent': "#c7ddb2",
-          'base-100': "#130d16",
           'base-content': "rgb(196, 49, 28)",
+          'base-100': "#130d16",
           '--rounded-box': '0',
           '--rounded-btn': '0'
         },

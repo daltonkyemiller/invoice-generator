@@ -1,61 +1,64 @@
+import { Button, Card, Input, Select, Textarea } from 'react-daisyui';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createCompanySchema, createInvoiceSchema } from '../../utils/schemas';
-import { Button, Card, Input, Select, Textarea } from 'react-daisyui';
-import { trpc } from '../../utils/trpc';
-import { IoMdAdd } from 'react-icons/io';
-import { useRef, useState } from 'react';
-import ServiceBuilder from '../ServiceBuilder';
+import { createCompanySchema } from '../../../utils/schemas';
+import { memo, useState } from 'react';
+import { trpc } from '../../../utils/trpc';
 import { useFloating } from '@floating-ui/react-dom';
-import { mergeRefs } from '../../utils/mergeRefs';
+import { IoMdAdd } from 'react-icons/io';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useStore } from '../../../utils/store';
 
-export default function InvoiceBuilder() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({ resolver: zodResolver(createInvoiceSchema) });
+export function AddCompany() {
+    const { invoice, setInvoice } = useStore();
 
     const { data: companies } = trpc.company.getAll.useQuery();
+    const { data: invoiceNumber } = trpc.invoice.getLastInvoiceNumber.useQuery(
+        { companyId: invoice?.company?.id },
+        {
+            enabled: !!invoice?.company?.id,
+            onSuccess: (data) => {
+                setInvoice({ number: data + 1 });
+            },
+        }
+    );
+
     if (!companies) return null;
     return (
-        <div className="flex flex-col gap-3">
-            <section className="flex flex-col gap-3 p-4">
-                <header className="upper-divider before:h-2">
-                    <h1 className="pt-4 text-4xl font-bold">Company</h1>
-                </header>
-
-                <div className="flex gap-3">
-                    <Select defaultValue="sel-comp">
-                        <Select.Option disabled value="sel-comp">
-                            Select a company
+        <>
+            <Select
+                defaultValue={invoice?.company?.id || 'sel-comp'}
+                onChange={(val: string) => {
+                    const company = companies.find(
+                        (c) => c.id === parseInt(val)
+                    );
+                    if (!company) return;
+                    setInvoice({ company });
+                }}
+            >
+                <Select.Option disabled value="sel-comp">
+                    Select a company
+                </Select.Option>
+                <>
+                    {companies.map((company) => (
+                        <Select.Option
+                            value={company.id}
+                            key={company.id}
+                            onSelect={(e) => {
+                                setInvoice({ company });
+                            }}
+                        >
+                            {company.name}
                         </Select.Option>
-                        <>
-                            {companies.map((company) => (
-                                <Select.Option
-                                    value={company.id}
-                                    key={company.id}
-                                >
-                                    {company.name}
-                                </Select.Option>
-                            ))}
-                        </>
-                    </Select>
-                    <AddCompanyPanel />
-                </div>
-            </section>
-            <section className="flex flex-col gap-3 p-4">
-                <header className="upper-divider before:h-2">
-                    <h1 className="pt-4 text-4xl font-bold">Services</h1>
-                </header>
-                <ServiceBuilder />
-            </section>
-        </div>
+                    ))}
+                </>
+            </Select>
+            <AddCompanyPanel />
+        </>
     );
 }
 
-export function AddCompanyPanel() {
+const AddCompanyPanel = memo(() => {
     const {
         register,
         handleSubmit,
@@ -159,4 +162,5 @@ export function AddCompanyPanel() {
             </AnimatePresence>
         </div>
     );
-}
+});
+AddCompanyPanel.displayName = 'AddCompanyPanel';

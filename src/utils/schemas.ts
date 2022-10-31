@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
 export const createServiceSchema = z.object({
-    hrs: z.number().min(1),
-    rate: z.number().min(1),
+    hrs: z.preprocess((v) => Number(v), z.number().min(1)),
+    rate: z.preprocess((v) => Number(v), z.number().min(1)),
     name: z.string().min(1),
     notes: z.string().optional(),
 });
 export type CreateServiceInput = z.TypeOf<typeof createServiceSchema>;
 
 export const createInvoiceSchema = z.object({
-    number: z.string(),
+    number: z.number(),
     companyId: z.number(),
     services: z.array(createServiceSchema),
 });
