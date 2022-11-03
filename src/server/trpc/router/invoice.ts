@@ -27,7 +27,7 @@ export const invoiceRouter = router({
                 },
             });
 
-            if (!lastInvoice) return -1;
+            if (!lastInvoice) return 0;
 
             return lastInvoice.number;
         }),

@@ -51,6 +51,9 @@ export const companyRouter = router({
 
             return await ctx.prisma.company.create({
                 data: { ...input, prefixId: newPrefix.id },
+                include: {
+                    prefix: true,
+                },
             });
         }),
 });

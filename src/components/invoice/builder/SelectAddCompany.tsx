@@ -19,19 +19,25 @@ export function SelectAddCompany() {
         {
             enabled: !!invoice?.company?.id,
             onSuccess: (data) => {
+                console.log(data);
                 setInvoice((prev) => ({ ...prev, number: data + 1 }));
             },
         }
     );
-
+    console.log(invoice?.company?.id);
     if (!companies) return null;
     return (
         <>
-            <Select
-                defaultValue={invoice?.company?.id || 'sel-comp'}
-                onChange={(val: string) => {
+            <select
+                className="select"
+                value={
+                    invoice?.company?.id
+                        ? String(invoice.company.id)
+                        : 'sel-comp'
+                }
+                onChange={(e) => {
                     const company = companies.find(
-                        (c) => c.id === parseInt(val)
+                        (c) => c.id === parseInt(e.currentTarget.value)
                     );
                     if (!company) return;
                     setInvoice((prev) => ({ ...prev, company }));
@@ -42,18 +48,12 @@ export function SelectAddCompany() {
                 </Select.Option>
                 <>
                     {companies.map((company) => (
-                        <Select.Option
-                            value={company.id}
-                            key={company.id}
-                            onSelect={(e) => {
-                                setInvoice({ company });
-                            }}
-                        >
+                        <Select.Option value={company.id} key={company.id}>
                             {company.name}
                         </Select.Option>
                     ))}
                 </>
-            </Select>
+            </select>
             <AddCompanyPanel />
         </>
     );
@@ -66,11 +66,13 @@ const AddCompanyPanel = memo(() => {
         formState: { errors },
     } = useForm({ resolver: zodResolver(createCompanySchema) });
     const [addCompany, setAddCompany] = useState(false);
+    const [invoice, setInvoice] = useAtom(INVOICE);
 
     const utils = trpc.useContext();
     const mutation = trpc.company.createCompany.useMutation({
-        onSuccess: async () => {
+        onSuccess: async (company) => {
             await utils.company.getAll.invalidate();
+            setInvoice((prev) => ({ ...prev, company }));
             setAddCompany(false);
         },
     });

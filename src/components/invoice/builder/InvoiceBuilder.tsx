@@ -6,6 +6,8 @@ import { SelectAddCompany } from './SelectAddCompany';
 import { AnimatePresence, motion } from 'framer-motion';
 import { atom, useAtom } from 'jotai';
 import { INVOICE } from '../../../utils/store';
+import { selectAtom } from 'jotai/utils';
+import { useMemo } from 'react';
 
 export default function InvoiceBuilder() {
     const {
@@ -14,7 +16,9 @@ export default function InvoiceBuilder() {
         formState: { errors },
     } = useForm({ resolver: zodResolver(createInvoiceSchema) });
 
-    const company = atom((get) => get(INVOICE)?.company);
+    const [companyExists] = useAtom(
+        useMemo(() => selectAtom(INVOICE, (i) => !!i?.company), [])
+    );
 
     return (
         <div className="flex flex-col gap-3">
@@ -28,7 +32,7 @@ export default function InvoiceBuilder() {
                 </div>
             </section>
             <AnimatePresence>
-                {company && (
+                {companyExists && (
                     <motion.section
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}
