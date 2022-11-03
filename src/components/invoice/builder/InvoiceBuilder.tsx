@@ -2,9 +2,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createInvoiceSchema } from '../../../utils/schemas';
 import ServiceBuilder from './ServiceBuilder';
-import { AddCompany } from './AddCompany';
+import { SelectAddCompany } from './SelectAddCompany';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useStore } from '../../../utils/store';
+import { atom, useAtom } from 'jotai';
+import { INVOICE } from '../../../utils/store';
 
 export default function InvoiceBuilder() {
     const {
@@ -13,7 +14,7 @@ export default function InvoiceBuilder() {
         formState: { errors },
     } = useForm({ resolver: zodResolver(createInvoiceSchema) });
 
-    const invoiceCompany = useStore((state) => !!state.invoice?.company);
+    const company = atom((get) => get(INVOICE)?.company);
 
     return (
         <div className="flex flex-col gap-3">
@@ -23,11 +24,11 @@ export default function InvoiceBuilder() {
                 </header>
 
                 <div className="flex gap-3">
-                    <AddCompany />
+                    <SelectAddCompany />
                 </div>
             </section>
             <AnimatePresence>
-                {invoiceCompany && (
+                {company && (
                     <motion.section
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}

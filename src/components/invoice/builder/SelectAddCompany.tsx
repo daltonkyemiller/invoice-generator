@@ -7,10 +7,11 @@ import { trpc } from '../../../utils/trpc';
 import { useFloating } from '@floating-ui/react-dom';
 import { IoMdAdd } from 'react-icons/io';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useStore } from '../../../utils/store';
+import { useAtom } from 'jotai';
+import { INVOICE } from '../../../utils/store';
 
-export function AddCompany() {
-    const { invoice, setInvoice } = useStore();
+export function SelectAddCompany() {
+    const [invoice, setInvoice] = useAtom(INVOICE);
 
     const { data: companies } = trpc.company.getAll.useQuery();
     const { data: invoiceNumber } = trpc.invoice.getLastInvoiceNumber.useQuery(
@@ -18,7 +19,7 @@ export function AddCompany() {
         {
             enabled: !!invoice?.company?.id,
             onSuccess: (data) => {
-                setInvoice({ number: data + 1 });
+                setInvoice((prev) => ({ ...prev, number: data + 1 }));
             },
         }
     );
@@ -33,7 +34,7 @@ export function AddCompany() {
                         (c) => c.id === parseInt(val)
                     );
                     if (!company) return;
-                    setInvoice({ company });
+                    setInvoice((prev) => ({ ...prev, company }));
                 }}
             >
                 <Select.Option disabled value="sel-comp">

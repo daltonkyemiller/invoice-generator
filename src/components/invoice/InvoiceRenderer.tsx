@@ -1,15 +1,15 @@
 import {
-    PDFViewer,
     Document,
-    Page,
+    Font,
     Link,
+    Page,
+    PDFViewer,
     StyleSheet,
     Text,
     View,
-    Font,
 } from '@react-pdf/renderer/lib/react-pdf.browser.cjs.min';
-import { prisma } from '../../server/db/client';
-import { useStore } from '../../utils/store';
+import { useAtom } from 'jotai';
+import { INVOICE } from '../../utils/store';
 
 Font.register({
     family: 'IvyMode',
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
 });
 
 export default function InvoiceRenderer() {
-    const invoice = useStore((state) => state.invoice);
+    const [invoice, setInvoice] = useAtom(INVOICE);
+    console.log(invoice);
 
     return (
         <div className="aspect-[8.5/11] ">
